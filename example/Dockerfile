@@ -24,7 +24,7 @@ RUN gobin github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
 
 ENV PROTOBUF_VERSION=3.6.1
 
-RUN curl -sSL https://github.com/uber/prototool/releases/download/v1.3.0/prototool-$(uname -s)-$(uname -m) \
+RUN curl -sSL https://github.com/uber/prototool/releases/download/v1.9.0/prototool-$(uname -s)-$(uname -m) \
     -o /usr/local/bin/prototool && \
     chmod +x /usr/local/bin/prototool
 

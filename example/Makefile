@@ -22,3 +22,6 @@ docker-push: ## push docker container containing build tools
 
 run: ## run the server
 	@go run main.go
+
+descriptor:
+	@docker run -v `pwd`:/tmp colemanword/prototool:latest prototool descriptor-set --include-imports --include-source-info >> descriptor.pb
