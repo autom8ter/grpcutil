@@ -33,4 +33,4 @@ generate:
     - name: grpc-gateway
       output: gen/go/example
     - name: swagger
-      output: gen/go/example
+      output: .
