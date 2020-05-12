@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "api";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
+
+service HelloService {
+  rpc Hello(HelloRequest) returns(HelloResponse){
+  };
+}
+message HelloRequest {
+  string text =1 [(validator.field) = {regex: ".+"}];
+}
+
+message HelloResponse{
+  string response =2;
+};
