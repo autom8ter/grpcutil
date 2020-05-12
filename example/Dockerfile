@@ -8,7 +8,8 @@ RUN apt-get -y install \
     wget \
     curl \
     git \
-    make
+    make \
+    unzip
 
 ENV GO111MODULE=on
 
@@ -36,9 +37,10 @@ RUN mkdir -p /tmp/protoc && \
   unzip protoc.zip && \
   mv /tmp/protoc/include /usr/local/include && mv /tmp/protoc/bin/protoc /usr/local/bin/protoc
 
+RUN git clone https://github.com/googleapis/googleapis
+RUN mv googleapis/google/ /usr/local/include/google
 
 RUN mv /go/bin/* /usr/local/bin/
 RUN chmod +x /usr/local/bin/*
 WORKDIR /tmp
 RUN rm -rf protoc
-COPY prototool.yaml .

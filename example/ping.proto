@@ -1,16 +1,21 @@
 syntax = "proto3";
 
-package api;
+package example;
 
-option go_package = "api";
-import "github.com/mwitkow/go-proto-validators/validator.proto";
+option go_package = "example";
+
+import "google/api/annotations.proto";
 
 service HelloService {
   rpc Hello(HelloRequest) returns(HelloResponse){
+    option (google.api.http) = {
+      get: "/hello/{text}"
+    };
   };
 }
+
 message HelloRequest {
-  string text =1 [(validator.field) = {regex: ".+"}];
+  string text =1;
 }
 
 message HelloResponse{

@@ -19,3 +19,6 @@ docker-build: ## build docker container containing build tools
 
 docker-push: ## push docker container containing build tools
 	@docker push colemanword/prototool:latest
+
+run: ## run the server
+	@go run main.go
