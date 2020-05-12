@@ -7,6 +7,8 @@
 
 grpc_util is a library for creating grpc/json APIs that run on the same port with a grpc-gateway translation layer
 
+[Example](https://github.com/autom8ter/grpcutil/blob/master/example/main.go)
+
 #### func  AllHeaderMatcherFunc
 
 ```go
