@@ -1,8 +1,8 @@
-package grpc_util_test
+package grpcutil_test
 
 import (
 	"context"
-	grpc_util "github.com/autom8ter/grpc-util"
+	"github.com/autom8ter/grpcutil"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
@@ -13,11 +13,11 @@ import (
 )
 
 func Test(t *testing.T) {
-	_, err := grpc_util.NewServer(
+	_, err := grpcutil.NewServer(
 		context.Background(),
-		grpc_util.WithClientProxyDialOptions(grpc.WithInsecure()),
-		grpc_util.WithPort(8080),
-		grpc_util.WithServerOptions(
+		grpcutil.WithClientProxyDialOptions(grpc.WithInsecure()),
+		grpcutil.WithPort(8080),
+		grpcutil.WithServerOptions(
 			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 				grpc_validator.UnaryServerInterceptor(),
 				grpc_recovery.UnaryServerInterceptor(),
@@ -27,14 +27,14 @@ func Test(t *testing.T) {
 				grpc_recovery.StreamServerInterceptor(),
 			)),
 		),
-		grpc_util.WithProxyOptions(runtime.WithIncomingHeaderMatcher(grpc_util.MappedHeaderMatcherFunc(map[string]bool{
+		grpcutil.WithProxyOptions(runtime.WithIncomingHeaderMatcher(grpcutil.MappedHeaderMatcherFunc(map[string]bool{
 			"authorization": true,
 			"Authorization": true,
 		}))),
-		grpc_util.WithProxyServiceRegistration(func(ctx context.Context, mux *runtime.ServeMux, port string, opts ...grpc.DialOption) {
+		grpcutil.WithProxyServiceRegistration(func(ctx context.Context, mux *runtime.ServeMux, port string, opts ...grpc.DialOption) {
 
 		}),
-		grpc_util.WithGRPCServiceRegistration(func(server *grpc.Server) {
+		grpcutil.WithGRPCServiceRegistration(func(server *grpc.Server) {
 
 		}))
 	if err != nil {

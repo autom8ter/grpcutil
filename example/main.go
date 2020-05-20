@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
-	grpc_util "github.com/autom8ter/grpcutil"
-	"github.com/autom8ter/grpc-util/example/gen/go/example"
+	"github.com/autom8ter/grpcutil"
+	"github.com/autom8ter/grpcutil/example/gen/go/example"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
 	grpc_validator "github.com/grpc-ecosystem/go-grpc-middleware/validator"
@@ -25,11 +25,11 @@ func (h Hello) Hello(ctx context.Context, request *example.HelloRequest) (*examp
 
 func main() {
 	hellosvc := &Hello{}
-	server, err := grpc_util.NewServer(
+	server, err := grpcutil.NewServer(
 		context.Background(),
-		grpc_util.WithClientProxyDialOptions(grpc.WithInsecure()),
-		grpc_util.WithPort(8080),
-		grpc_util.WithServerOptions(
+		grpcutil.WithClientProxyDialOptions(grpc.WithInsecure()),
+		grpcutil.WithPort(8080),
+		grpcutil.WithServerOptions(
 			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 				grpc_validator.UnaryServerInterceptor(),
 				grpc_recovery.UnaryServerInterceptor(),
@@ -39,16 +39,16 @@ func main() {
 				grpc_recovery.StreamServerInterceptor(),
 			)),
 		),
-		grpc_util.WithProxyOptions(runtime.WithIncomingHeaderMatcher(grpc_util.MappedHeaderMatcherFunc(map[string]bool{
+		grpcutil.WithProxyOptions(runtime.WithIncomingHeaderMatcher(grpcutil.MappedHeaderMatcherFunc(map[string]bool{
 			"authorization": true,
 			"Authorization": true,
 		}))),
-		grpc_util.WithProxyServiceRegistration(func(ctx context.Context, mux *runtime.ServeMux, host string, opts ...grpc.DialOption) {
+		grpcutil.WithProxyServiceRegistration(func(ctx context.Context, mux *runtime.ServeMux, host string, opts ...grpc.DialOption) {
 			if err := example.RegisterHelloServiceHandlerFromEndpoint(ctx, mux, host, opts); err != nil {
 				log.Fatal(err.Error())
 			}
 		}),
-		grpc_util.WithGRPCServiceRegistration(func(server *grpc.Server) {
+		grpcutil.WithGRPCServiceRegistration(func(server *grpc.Server) {
 			example.RegisterHelloServiceServer(server, hellosvc)
 		}))
 	if err != nil {
