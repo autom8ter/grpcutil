@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	grpc_util "github.com/autom8ter/grpc-util"
+	grpc_util "github.com/autom8ter/grpcutil"
 	"github.com/autom8ter/grpc-util/example/gen/go/example"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
