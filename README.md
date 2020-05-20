@@ -1,13 +1,9 @@
-# grpc_util
+# grpcutil
 --
-    import "github.com/autom8ter/grpc-util"
+    import "github.com/autom8ter/grpcutil"
 
 
 ## Usage
-
-grpc_util is a library for creating grpc/json APIs that run on the same port with a grpc-gateway translation layer
-
-[Example](https://github.com/autom8ter/grpcutil/blob/master/example/main.go)
 
 #### func  AllHeaderMatcherFunc
 
@@ -70,6 +66,13 @@ WithPort is the port to serve on
 func WithProxyOptions(opts ...runtime.ServeMuxOption) ConfigOption
 ```
 WithProxyOptions registers header matchers(ex MappedHeaderMatcher)
+
+#### func  WithProxyPrefix
+
+```go
+func WithProxyPrefix(prefix string) ConfigOption
+```
+WithProxyPrefix servers the grpc gateway proxy after this prefix
 
 #### func  WithProxyServiceRegistration
 

@@ -22,6 +22,7 @@ type Config struct {
 	proxyOptions        []runtime.ServeMuxOption                                                               //register header matchers(ex MappedHeaderMatcher)
 	proxyClientOpts     []grpc.DialOption                                                                      //register client options between gateway and grpc server
 	serverOptions       []grpc.ServerOption                                                                    //register interceptors and other server options
+	muxPrefix           string
 }
 
 //ConfigOption is a first class function used for grpc/proxy initialization
@@ -31,6 +32,13 @@ type ConfigOption func(c *Config)
 func WithPort(port int) ConfigOption {
 	return func(c *Config) {
 		c.port = port
+	}
+}
+
+//WithProxyPrefix servers the grpc gateway proxy after this prefix
+func WithProxyPrefix(prefix string) ConfigOption {
+	return func(c *Config) {
+		c.muxPrefix = prefix
 	}
 }
 
@@ -102,7 +110,10 @@ func NewServer(ctx context.Context, opts ...ConfigOption) (*Server, error) {
 	proxy := runtime.NewServeMux(cfg.proxyOptions...)
 	cfg.proxyRegistration(ctx, proxy, fmt.Sprintf("localhost:%v", cfg.port), cfg.proxyClientOpts...)
 	mux := http.NewServeMux()
-	mux.Handle("/", proxy)
+	if cfg.muxPrefix == "" {
+		cfg.muxPrefix = "/"
+	}
+	mux.Handle(cfg.muxPrefix, proxy)
 	mux.HandleFunc("/service-info", func(w http.ResponseWriter, r *http.Request) {
 		if err := json.NewEncoder(w).Encode(gServer.GetServiceInfo()); err != nil {
 			http.Error(w, "failed to encode grpc service info", http.StatusInternalServerError)
