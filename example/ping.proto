@@ -5,6 +5,7 @@ package example;
 option go_package = "example";
 
 import "google/api/annotations.proto";
+import "github.com/mwitkow/go-proto-validators/validator.proto";
 
 service HelloService {
   rpc Hello(HelloRequest) returns(HelloResponse){
@@ -15,7 +16,7 @@ service HelloService {
 }
 
 message HelloRequest {
-  string text =1;
+  string text =1 [(validator.field) = {regex : "^.{2,225}$"}];
 }
 
 message HelloResponse{
